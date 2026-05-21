@@ -252,6 +252,7 @@ function Float({ children, amp = 14, dur = 6.5 }: {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export function HeroSection() {
   const [scene, setScene] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
   const cta     = useMagnetic(0.4);
   const current = SCENES[scene];
 
@@ -350,20 +351,102 @@ export function HeroSection() {
             </a>
           ))}
         </div>
+
+        {/* Hamburger — mobile only */}
+        <button
+          className="sm:hidden flex flex-col justify-center items-center gap-[6px] w-8 h-8 cursor-pointer"
+          onClick={() => setMenuOpen(v => !v)}
+          aria-label="Toggle menu"
+        >
+          <AnimatePresence mode="wait">
+            {menuOpen ? (
+              <motion.svg key="x" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                initial={{ opacity: 0, rotate: -45 }} animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0 }} transition={{ duration: 0.22 }}>
+                <path d="M2 2L14 14M14 2L2 14" stroke={TEXT} strokeWidth="1.5" strokeLinecap="round" />
+              </motion.svg>
+            ) : (
+              <motion.svg key="burger" width="20" height="13" viewBox="0 0 20 13" fill="none"
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }} transition={{ duration: 0.22 }}>
+                <line x1="0" y1="1" x2="20" y2="1" stroke={TEXT} strokeWidth="1.5" strokeLinecap="round" />
+                <line x1="0" y1="6.5" x2="14" y2="6.5" stroke={TEXT} strokeWidth="1.5" strokeLinecap="round" />
+                <line x1="0" y1="12" x2="20" y2="12" stroke={TEXT} strokeWidth="1.5" strokeLinecap="round" />
+              </motion.svg>
+            )}
+          </AnimatePresence>
+        </button>
       </motion.nav>
+
+      {/* ── MOBILE MENU ─────────────────────────────────── */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: EASE }}
+            className="fixed inset-0 z-50 flex flex-col sm:hidden"
+            style={{ backgroundColor: BG }}
+          >
+            {/* Top bar mirrors nav */}
+            <div className="flex justify-between items-center px-8 pt-8 flex-shrink-0">
+              <span className="font-black uppercase"
+                style={{ color: TEXT, fontSize: '0.78rem', letterSpacing: '0.22em' }}>
+                Jack
+              </span>
+              <button className="cursor-pointer p-1 flex items-center justify-center"
+                onClick={() => setMenuOpen(false)} aria-label="Close menu">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M2 2L14 14M14 2L2 14" stroke={TEXT} strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Links */}
+            <nav className="flex-1 flex flex-col justify-center px-8 gap-4">
+              {NAV_LINKS.map((link, i) => (
+                <motion.a
+                  key={link}
+                  href={`#${link.toLowerCase()}`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.35, delay: 0.08 + i * 0.07, ease: EASE }}
+                  onClick={() => setMenuOpen(false)}
+                  className="font-black uppercase"
+                  style={{ color: TEXT, fontSize: 'clamp(2.2rem, 9vw, 2.8rem)', letterSpacing: '-0.02em', lineHeight: 1 }}
+                  onMouseEnter={e => (e.currentTarget.style.color = DIM)}
+                  onMouseLeave={e => (e.currentTarget.style.color = TEXT)}
+                >
+                  {link}
+                </motion.a>
+              ))}
+            </nav>
+
+            {/* Bottom strip */}
+            <div className="px-8 pb-10 flex-shrink-0">
+              <span className="uppercase"
+                style={{ color: DIMMER, fontSize: '0.58rem', letterSpacing: '0.22em' }}>
+                © 2024
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── HERO BODY ───────────────────────────────────────── */}
       <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-2 px-8 md:px-14 lg:px-0">
 
         {/* ── LEFT — identity ───────────────────────────────── */}
-        <div className="relative flex flex-col justify-center lg:px-16 py-10 lg:py-0 overflow-hidden">
+        <div className="relative flex flex-col justify-center lg:px-16 py-4 sm:py-10 lg:py-0 overflow-hidden">
 
-          {/* Background scene counter — faded, absolute */}
+          {/* Background scene counter — faded, absolute — desktop only */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5, ease: EASE }}
-            className="absolute font-black leading-none"
+            className="absolute font-black leading-none hidden sm:block"
             style={{
               bottom:        '-8%',
               right:         '-6%',
@@ -379,14 +462,14 @@ export function HeroSection() {
           </motion.div>
 
           {/* Mobile object */}
-          <div className="lg:hidden relative h-[44vw] max-h-[260px] mb-8 flex items-center justify-center overflow-hidden">
+          <div className="lg:hidden relative h-[36vw] max-h-[200px] mb-4 sm:mb-8 flex items-center justify-center overflow-hidden">
             <AnimatePresence mode="popLayout">
               <motion.div key={scene} variants={objMobileVariants}
                 initial="initial" animate="animate" exit="exit" className="absolute">
                 <Float amp={10} dur={5.5}>
                   <img src={current.object} alt={current.objAlt}
                     className="select-none"
-                    style={{ height: '200px', width: 'auto', objectFit: 'contain' }}
+                    style={{ height: 'clamp(130px, 40vw, 200px)', width: 'auto', objectFit: 'contain' }}
                     draggable={false} />
                 </Float>
               </motion.div>
@@ -394,14 +477,14 @@ export function HeroSection() {
           </div>
 
           {/* Name — scatter letters */}
-          <div className="overflow-visible mb-3">
+          <div className="overflow-visible mb-1 sm:mb-3">
             <motion.h1
               className="font-black leading-[0.88]"
               initial={{ y: '105%', opacity: 0 }}
               animate={{ y: '0%',   opacity: 1 }}
               transition={{ duration: 0.95, delay: 0.38, ease: EASE }}
               style={{
-                fontSize:      'clamp(4.5rem, 11.5vw, 10rem)',
+                fontSize:      'clamp(3.8rem, 11.5vw, 10rem)',
                 color:         TEXT,
                 letterSpacing: '-0.03em',
               }}
@@ -414,7 +497,7 @@ export function HeroSection() {
 
           {/* Cycling descriptor */}
           <div
-            className="font-black leading-[0.9] mb-10"
+            className="font-black leading-[0.9] mb-3 sm:mb-8 md:mb-10"
             style={{
               fontSize:      'clamp(1.8rem, 4.5vw, 4.2rem)',
               letterSpacing: '-0.025em',
@@ -431,7 +514,7 @@ export function HeroSection() {
           <motion.div
             initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
             transition={{ duration: 1.0, delay: 0.7, ease: EASE }}
-            className="origin-left mb-8"
+            className="origin-left mb-3 sm:mb-6 md:mb-8"
             style={{ height: '1px', backgroundColor: RULE }}
           />
 
@@ -439,7 +522,7 @@ export function HeroSection() {
           <motion.p
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.85, ease: EASE }}
-            className="font-light mb-10"
+            className="font-light mb-4 sm:mb-8 md:mb-10"
             style={{ color: DIM, fontSize: 'clamp(0.82rem, 1.25vw, 1rem)', lineHeight: 1.75, maxWidth: '30ch' }}
           >
             <motion.span

@@ -113,7 +113,7 @@ export function FooterSection() {
     <footer id="contact" style={{ backgroundColor: BG }}>
 
       {/* ══ CTA SECTION ══════════════════════════════════════════ */}
-      <div className="relative overflow-hidden px-8 md:px-14 lg:px-16 pt-28 md:pt-36 pb-24 md:pb-32">
+      <div className="relative overflow-hidden px-8 md:px-14 lg:px-16 pt-6 sm:pt-20 md:pt-36 pb-16 md:pb-32">
 
         {/* Grain */}
         <div className="fixed inset-0 pointer-events-none" style={{
@@ -183,7 +183,7 @@ export function FooterSection() {
         <div
           ref={ctaRef}
           className="font-black uppercase leading-[0.88] mb-14 md:mb-20"
-          style={{ fontSize: 'clamp(3.8rem, 10.5vw, 11rem)', letterSpacing: '-0.03em' }}
+          style={{ fontSize: 'clamp(2.2rem, 9.5vw, 11rem)', letterSpacing: '-0.03em' }}
         >
           <div style={{ overflow: 'hidden' }}>
             <motion.div style={{ x: x1, color: TEXT }}>Let's build</motion.div>

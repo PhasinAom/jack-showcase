@@ -53,7 +53,7 @@ export function MarqueeSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-[#0C0C0C] pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden"
+      className="bg-[#0C0C0C] pt-0 sm:pt-32 md:pt-40 pb-10 overflow-hidden"
     >
       <div className="flex flex-col gap-3">
         {/* Row 1 — moves right */}

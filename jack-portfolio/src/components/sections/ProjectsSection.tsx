@@ -108,8 +108,8 @@ function ProjectCard({ project, index, containerProgress }: ProjectCardProps) {
       />
 
       {/* Top row */}
-      <div className="relative flex flex-wrap items-center justify-between gap-4 mb-4 sm:mb-6">
-        <div className="flex items-baseline gap-4 sm:gap-6">
+      <div className="relative flex flex-wrap items-center gap-4 mb-4 sm:mb-6">
+        <div className="flex items-baseline gap-4 sm:gap-6 flex-1">
           <span
             className="font-black text-[#D7E2EA] leading-none"
             style={{ fontSize: 'clamp(3rem, 10vw, 140px)' }}
@@ -142,14 +142,14 @@ function ProjectCard({ project, index, containerProgress }: ProjectCardProps) {
             alt={`${project.name} preview 1`}
             loading="lazy"
             className={`w-full object-cover ${cardRadius}`}
-            style={{ height: 'clamp(130px, 16vw, 230px)' }}
+            style={{ height: 'clamp(90px, 16vw, 230px)' }}
           />
           <img
             src={project.col1img2}
             alt={`${project.name} preview 2`}
             loading="lazy"
             className={`w-full object-cover ${cardRadius}`}
-            style={{ height: 'clamp(160px, 22vw, 340px)' }}
+            style={{ height: 'clamp(110px, 22vw, 340px)' }}
           />
         </div>
         <div style={{ width: '60%' }}>
@@ -159,7 +159,7 @@ function ProjectCard({ project, index, containerProgress }: ProjectCardProps) {
             loading="lazy"
             className={`w-full object-cover ${cardRadius}`}
             style={{
-              height: 'calc(clamp(130px, 16vw, 230px) + clamp(160px, 22vw, 340px) + 12px)',
+              height: 'calc(clamp(90px, 16vw, 230px) + clamp(110px, 22vw, 340px) + 12px)',
             }}
           />
         </div>
@@ -181,7 +181,7 @@ export function ProjectsSection() {
       id="projects"
       className="bg-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px]
         -mt-10 sm:-mt-12 md:-mt-14 z-10 relative
-        px-5 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-32 pb-32"
+        px-5 sm:px-8 md:px-10 pt-20 sm:pt-24 md:pt-32 pb-0"
     >
       <FadeIn y={40}>
         <h2
@@ -201,7 +201,7 @@ export function ProjectsSection() {
       */}
       <div
         ref={scrollRef}
-        style={{ height: `${TOTAL * 100}vh` }}
+        style={{ height: `${TOTAL * 60}svh` }}
       >
         {/*
           STICKY VIEWPORT — stays pinned at the top of the screen for the
@@ -210,7 +210,7 @@ export function ProjectsSection() {
         */}
         <div
           className="sticky top-0 overflow-hidden"
-          style={{ height: '100vh' }}
+          style={{ height: '70svh' }}
         >
           {PROJECTS.map((project, i) => (
             <ProjectCard
