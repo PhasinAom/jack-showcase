@@ -87,14 +87,14 @@ function ProjectCard({ project, index, containerProgress }: ProjectCardProps) {
   );
 
   const cardRadius = 'rounded-[40px] sm:rounded-[50px] md:rounded-[60px]';
+  const topOffset = PEEK_PX + i * PEEK_PX;
 
   return (
     <motion.div
-      className={`absolute inset-x-0 ${cardRadius} border-2 border-[#D7E2EA] bg-[#0C0C0C] p-4 sm:p-6 md:p-8 overflow-hidden`}
+      className={`absolute inset-x-0 ${cardRadius} border-2 border-[#D7E2EA] bg-[#0C0C0C] p-4 sm:p-6 md:p-8 overflow-hidden flex flex-col`}
       style={{
-        // Staggered top: card 0 at 20px, card 1 at 40px, card 2 at 60px
-        // so the tops of buried cards are always visible
-        top: PEEK_PX + i * PEEK_PX,
+        top: topOffset,
+        height: `calc(100svh - 40px - ${topOffset}px)`,
         zIndex: i + 1,
         y,
         scale,
@@ -108,7 +108,7 @@ function ProjectCard({ project, index, containerProgress }: ProjectCardProps) {
       />
 
       {/* Top row */}
-      <div className="relative flex flex-wrap items-center gap-4 mb-4 sm:mb-6">
+      <div className="relative flex flex-wrap items-center gap-4 mb-4 sm:mb-6 shrink-0">
         <div className="flex items-baseline gap-4 sm:gap-6 flex-1">
           <span
             className="font-black text-[#D7E2EA] leading-none"
@@ -134,33 +134,31 @@ function ProjectCard({ project, index, containerProgress }: ProjectCardProps) {
         <LiveProjectButton />
       </div>
 
-      {/* Image grid */}
-      <div className="relative flex gap-3 sm:gap-4">
+      {/* Image grid — flex-1 fills remaining card height */}
+      <div className="relative flex gap-3 sm:gap-4 flex-1 min-h-0">
         <div className="flex flex-col gap-3 sm:gap-4" style={{ width: '40%' }}>
           <img
             src={project.col1img1}
             alt={`${project.name} preview 1`}
             loading="lazy"
             className={`w-full object-cover ${cardRadius}`}
-            style={{ height: 'clamp(90px, 16vw, 230px)' }}
+            style={{ flex: '2', minHeight: 0 }}
           />
           <img
             src={project.col1img2}
             alt={`${project.name} preview 2`}
             loading="lazy"
             className={`w-full object-cover ${cardRadius}`}
-            style={{ height: 'clamp(110px, 22vw, 340px)' }}
+            style={{ flex: '3', minHeight: 0 }}
           />
         </div>
-        <div style={{ width: '60%' }}>
+        <div className="flex" style={{ width: '60%' }}>
           <img
             src={project.col2img}
             alt={`${project.name} preview 3`}
             loading="lazy"
             className={`w-full object-cover ${cardRadius}`}
-            style={{
-              height: 'calc(clamp(90px, 16vw, 230px) + clamp(110px, 22vw, 340px) + 12px)',
-            }}
+            style={{ minHeight: 0 }}
           />
         </div>
       </div>
@@ -210,7 +208,7 @@ export function ProjectsSection() {
         */}
         <div
           className="sticky top-0 overflow-hidden"
-          style={{ height: '70svh' }}
+          style={{ height: 'calc(100svh - 40px)' }}
         >
           {PROJECTS.map((project, i) => (
             <ProjectCard
